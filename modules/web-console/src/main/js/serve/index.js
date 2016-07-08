@@ -17,9 +17,24 @@
 
 'use strict';
 
+import fs from 'fs';
+import path from 'path';
 import http from 'http';
 import https from 'https';
-import fireUp from './injector';
+
+const igniteModules = process.env.IGNITE_MODULES || './ignite_modules';
+
+let injector;
+
+try {
+    const igniteModulesInjector = path.join(igniteModules, 'injector.js');
+
+    fs.accessSync(igniteModulesInjector, fs.F_OK);
+
+    injector = require(igniteModulesInjector);
+} catch (ignore) {
+    injector = require(path.join(__dirname, 'injector'));
+}
 
 /**
  * Event listener for HTTP server "error" event.
@@ -56,13 +71,8 @@ const _onListening = (addr) => {
     console.log('Start listening on ' + bind);
 };
 
-Promise.all([fireUp('settings'), fireUp('app'), fireUp('agent-manager'), fireUp('browser-manager')])
-    .then((values) => {
-        const settings = values[0];
-        const app = values[1];
-        const agentMgr = values[2];
-        const browserMgr = values[3];
-
+Promise.all([injector('settings'), injector('app'), injector('agent-manager'), injector('browser-manager')])
+    .then(([settings, app, agentMgr, browserMgr]) => {
         // Start rest server.
         const server = settings.server.SSLOptions
             ? https.createServer(settings.server.SSLOptions) : http.createServer();

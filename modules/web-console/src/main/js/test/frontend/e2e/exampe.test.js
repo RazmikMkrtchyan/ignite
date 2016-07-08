@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-suite('test', () => {
+suite('ExampleTestSuite', () => {
     setup(() => {
         // browser.get('http://localhost:9000/');
     });

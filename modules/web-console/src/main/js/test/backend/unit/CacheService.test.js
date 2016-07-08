@@ -17,7 +17,7 @@
 
 
 import {assert} from 'chai';
-import fireUp from '../injector';
+import injector from '../injector';
 import testCaches from '../data/caches.json';
 import testAccounts from '../data/accounts.json';
 
@@ -39,9 +39,9 @@ suite('CacheServiceTestsSuite', () => {
     };
 
     suiteSetup(() => {
-        return Promise.all([fireUp('services/cache'),
-            fireUp('mongo'),
-            fireUp('errors')])
+        return Promise.all([injector('services/cache'),
+            injector('mongo'),
+            injector('errors')])
             .then(([_cacheService, _mongo, _errors]) => {
                 mongo = _mongo;
                 cacheService = _cacheService;

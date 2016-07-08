@@ -28,7 +28,15 @@ module.exports = {
 };
 
 module.exports.factory = function(nconf, fs) {
-    nconf.file({file: './serve/config/settings.json'});
+    const file = process.env.SETTINGS || 'serve/config/settings.json';
+
+    try {
+        fs.accessSync(file, fs.F_OK);
+
+        nconf.file({file});
+    } catch (ignore) {
+        nconf.file({file: 'serve/config/settings.json'});
+    }
 
     if (process.env.CONFIG_PATH && fs.existsSync(process.env.CONFIG_PATH))
         nconf.file({file: process.env.CONFIG_PATH});

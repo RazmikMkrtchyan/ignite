@@ -16,15 +16,17 @@
  */
 
 import path from 'path';
+import fireUp from 'fire-up';
 
-const igniteModules = (process.env.IGNITE_MODULES && path.relative(__dirname, process.env.IGNITE_MODULES)) || './ignite_modules';
+const igniteModules = process.env.IGNITE_MODULES || './ignite_modules';
 
-const fireUp = require('fire-up').newInjector({
-    basePath: `${__dirname}/../..`,
+module.exports = fireUp.newInjector({
+    basePath: __dirname,
     modules: [
-        './serve/**/*.js',
-        `${igniteModules}/**/*.js`
+        '**/*.js',
+        path.join(igniteModules, '**/*.js')
+    ],
+    use: [
+        'services/configuration:gridgain'
     ]
 });
-
-module.exports = fireUp;

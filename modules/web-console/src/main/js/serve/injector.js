@@ -15,21 +15,11 @@
  * limitations under the License.
  */
 
-import path from 'path';
-import injector from 'fire-up';
+import fireUp from 'fire-up';
 
-const igniteModules = (process.env.IGNITE_MODULES && path.relative(__dirname, process.env.IGNITE_MODULES)) || './ignite_modules';
-
-const modulesInjectConfig = require(path.join(igniteModules, 'injector.json'));
-
-const defaultInjectConfig = {
+module.exports = fireUp.newInjector({
     basePath: __dirname,
     modules: [
-        './**/*.js',
-        `${igniteModules}/**/*.js`
+        './**/*.js'
     ]
-};
-
-const fireUp = injector.newInjector(Object.assign({}, defaultInjectConfig, modulesInjectConfig));
-
-module.exports = fireUp;
+});

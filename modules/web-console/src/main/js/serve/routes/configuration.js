@@ -25,7 +25,6 @@ module.exports = {
 };
 
 module.exports.factory = function(_, express, mongo, configurationService) {
-
     return new Promise((factoryResolve) => {
         const router = new express.Router();
         /**

@@ -6,5 +6,4 @@ node_modules
 ignite_modules_temp/*
 public/stylesheets/*.css
 serve/config/*.json
-!serve/config/settings.test.json
 serve/agent_dists/*.zip
